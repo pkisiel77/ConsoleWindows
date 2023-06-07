@@ -1,61 +1,32 @@
-﻿#include <iostream>
-
-#include <conio.h>
-#include <windows.h>
+﻿#include <conio.h>
 
 
-HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
-void gotoxy(int x, int y)
-{
-    COORD coordinate{x,y};
-    SetConsoleCursorPosition(hConsole, coordinate);
-}
-
-
-void set_color(int color) {
-    SetConsoleTextAttribute(hConsole, color);
-}
-
-void init_console();
-
-void init_console() {
-
-}
+#include "ConsoleApi.cpp"
 
 int main()
 {
-    int x = 10, y = 10;
+    CursorPosition cp{ 10,10 };
 
-    set_color(10);
+    ConsoleApi consoleApi{};
+    consoleApi.InitConsole();
+
+    consoleApi.CursorSetColor(10);
 
     while (true) {
         if (_kbhit()) {
-            char key = _getch();
+	        const char key = _getch();
 
             if (key == 'a') {
-                gotoxy(x, y);
-                std::cout << " ";
-                gotoxy(--x, y);
-                std::cout << "*";
+                consoleApi.CursorLeft(cp);
             }
             else if (key == 'd') {
-                gotoxy(x, y);
-                std::cout << " ";
-                gotoxy(++x, y);
-                std::cout << "*";
+                consoleApi.CursorRight(cp);
             }
             else if (key == 'w') {
-                gotoxy(x, y);
-                std::cout << " ";
-                gotoxy(x, --y);
-                std::cout << "*";
+                consoleApi.CursorUp(cp);
             }
             else if (key == 's') {
-                gotoxy(x, y);
-                std::cout << " ";
-                gotoxy(x, ++y);
-                std::cout << "*";
+                consoleApi.CursorDown(cp);
             }
             else if (key == 27) {
                 break;
@@ -64,4 +35,5 @@ int main()
     }
 
 }
+
 
